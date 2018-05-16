@@ -22,17 +22,27 @@ export default class SMSForm extends Component {
             .bind(this);
     }
 
+    resetErrors() {
+        this.setState({
+            noPhone: false,
+            noMessage: false
+        });
+    }
+
+    reduceCredits() {
+        this.setState({
+            credits: credits - 1
+        });
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
         const {phone, message, credits} = this.state;
         
+        this.resetErrors();
+
         if (credits > 0) {
-            this.setState({
-                noPhone: false,
-                noMessage: false
-            });
-    
     
             if (!phone) {
                 this.setState({
@@ -49,13 +59,11 @@ export default class SMSForm extends Component {
             /* TODO:  do something with phone and message */
             alert(`Message send to: ${phone}`);
 
-            this.setState({
-                credits: credits - 1
-            });
+            this.reduceCredits();
         }
 
         else {
-            alert('Insufficient credits')
+            alert('Insufficient credits');
         }
     }
 
