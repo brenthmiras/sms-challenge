@@ -7,7 +7,9 @@ export default class SMSForm extends Component {
 
         this.state = {
             phone: '',
-            message: ''
+            message: '',
+            noPhone: false,
+            noMessage: false
         };
 
         this.handleSubmit = this
@@ -21,7 +23,24 @@ export default class SMSForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        this.setState({
+            noPhone: false,
+            noMessage: false
+        });
+
         const {phone, message} = this.state;
+
+        if (!phone) {
+            this.setState({
+                noPhone: true
+            });
+        }
+
+        if (!message) {
+            this.setState({
+                noMessage: true
+            });
+        }
 
         /* TODO:  do something with phone and message */
     }
@@ -35,7 +54,7 @@ export default class SMSForm extends Component {
     }
 
     render() {
-        const {phone, message} = this.state;
+        const {phone, message, noPhone, noMessage} = this.state;
 
         return (
             <div className="jumbotron d-flex align-items-center">
@@ -48,6 +67,8 @@ export default class SMSForm extends Component {
                                         Phone number
                                     </label>
                                     <input className="form-control" name="phone" value={phone} onChange={this.handleChange}/>
+
+                                    <ErrorMessage shown={noPhone} text={'Phone number is required!'}/>
                                 </div>
 
                                 <div className="form-group">
@@ -55,6 +76,7 @@ export default class SMSForm extends Component {
                                         Message
                                     </label>
                                     <textarea className="form-control" name="message" value={message} onChange={this.handleChange}></textarea>
+                                    <ErrorMessage shown={noMessage} text={'Message is required!'}/>
                                 </div>
 
                                 <button className="btn btn-primary btn-block">Send</button>
@@ -64,5 +86,19 @@ export default class SMSForm extends Component {
                 </div>
             </div>
         );
+    }
+}
+
+function ErrorMessage (props) {
+    const {shown, text} = props;
+
+    if (shown) {
+        return (
+            <small className="text-danger">{text}</small>
+        );
+    }
+
+    else {
+        return '';
     }
 }
