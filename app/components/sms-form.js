@@ -50,7 +50,13 @@ export default class SMSForm extends Component {
         const name = target.name;
         const value = target.value;
 
-        this.setState({[name]: value});
+        if (name == 'phone' && !isNaN(value)) {
+            this.setState({[name]: value});
+        }
+
+        if (name == 'message') {
+            this.setState({[name]: value});
+        }
     }
 
     render() {
