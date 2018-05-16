@@ -6,31 +6,38 @@ export default class SMSForm extends Component {
         super(props);
 
         this.state = {
+            phone: '',
             message: ''
         };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this
+            .handleSubmit
+            .bind(this);
+        this.handleChange = this
+            .handleChange
+            .bind(this);
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        
-        const {message} = this.state;
 
-        /* TODO:  */
+        const {phone, message} = this.state;
+        
+        /* TODO:  do something with phone and message */
     }
 
     handleChange(e) {
-        const value = e.target.value;
-        
+        const target = e.target;
+        const name   = target.name;
+        const value  = target.value;
+
         this.setState({
-            message: value
+            [name] : value
         });
     }
 
     render() {
-        const {message} = this.state;
+        const {phone, message} = this.state;
 
         return (
             <div>
@@ -38,14 +45,11 @@ export default class SMSForm extends Component {
                     <label>
                         Phone number
                     </label>
-                    <input/>
+                    <input name="phone" value={phone} onChange={this.handleChange}/>
                     <label>
                         Message
                     </label>
-                    <textarea
-                        value={message}
-                        onChange={this.handleChange}>
-                    </textarea>
+                    <textarea name="message" value={message} onChange={this.handleChange}></textarea>
                     <button>Send</button>
                 </form>
             </div>
