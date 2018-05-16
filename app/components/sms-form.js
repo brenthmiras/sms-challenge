@@ -9,7 +9,9 @@ export default class SMSForm extends Component {
             phone: '',
             message: '',
             noPhone: false,
-            noMessage: false
+            noMessage: false,
+            credits: 3,
+            noCredits: false
         };
 
         this.handleSubmit = this
@@ -23,26 +25,38 @@ export default class SMSForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.setState({
-            noPhone: false,
-            noMessage: false
-        });
-
-        const {phone, message} = this.state;
-
-        if (!phone) {
+        const {phone, message, credits} = this.state;
+        
+        if (credits > 0) {
             this.setState({
-                noPhone: true
+                noPhone: false,
+                noMessage: false
+            });
+    
+    
+            if (!phone) {
+                this.setState({
+                    noPhone: true
+                });
+            }
+    
+            if (!message) {
+                this.setState({
+                    noMessage: true
+                });
+            }
+    
+            /* TODO:  do something with phone and message */
+            alert(`Message send to: ${phone}`);
+
+            this.setState({
+                credits: credits - 1
             });
         }
 
-        if (!message) {
-            this.setState({
-                noMessage: true
-            });
+        else {
+            alert('Insufficient credits')
         }
-
-        /* TODO:  do something with phone and message */
     }
 
     handleChange(e) {
@@ -60,12 +74,15 @@ export default class SMSForm extends Component {
     }
 
     render() {
-        const {phone, message, noPhone, noMessage} = this.state;
+        const {phone, message, noPhone, noMessage, credits} = this.state;
 
         return (
             <div className="jumbotron d-flex align-items-center">
                 <div className="container text-center">
                     <div className="card mx-auto col-md-4">
+                        <p className="text-left">
+                            Credits: {credits}
+                        </p>
                         <div className="card-body">
                             <form onSubmit={this.handleSubmit}>
                                 <div className="form-group">
