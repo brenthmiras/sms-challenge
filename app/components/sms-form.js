@@ -36,6 +36,10 @@ export default class SMSForm extends Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <label>
+                        Phone number
+                    </label>
+                    <input/>
+                    <label>
                         Message
                     </label>
                     <textarea
