@@ -1,4 +1,5 @@
 var path = require('path');
+var Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: './app/index.js',
@@ -20,6 +21,9 @@ module.exports = {
                 }]
             }
         ]
-    }
+    },
+    plugins: [
+        new Dotenv()
+    ]
     // end of babel-loader
 };

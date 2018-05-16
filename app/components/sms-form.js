@@ -84,6 +84,10 @@ export default class SMSForm extends Component {
     render() {
         const {phone, message, noPhone, noMessage, credits} = this.state;
 
+        const key = process.env.API_KEY;
+
+        debugger;
+
         return (
             <div className="jumbotron d-flex align-items-center">
                 <div className="container text-center">
