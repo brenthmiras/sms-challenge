@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+import SMSService from '../services/sms';
 
 export default class SMSForm extends Component {
 
@@ -31,8 +32,22 @@ export default class SMSForm extends Component {
 
     reduceCredits() {
         this.setState({
-            credits: credits - 1
+            credits: this.state.credits - 1
         });
+    }
+
+    sendSMS(phone, message) {
+
+        SMSService.send(phone, message)
+        .then( (response) => {
+            alert(`Message sent to: ${phone}`);
+            this.reduceCredits();
+        })
+        .catch( (response) => {
+            alert(`Cannot send sms.`);
+            console.log(response);
+        })
+
     }
 
     handleSubmit(e) {
@@ -55,11 +70,8 @@ export default class SMSForm extends Component {
                     noMessage: true
                 });
             }
-    
-            /* TODO:  do something with phone and message */
-            alert(`Message send to: ${phone}`);
 
-            this.reduceCredits();
+            this.sendSMS(phone, message);
         }
 
         else {
@@ -83,10 +95,6 @@ export default class SMSForm extends Component {
 
     render() {
         const {phone, message, noPhone, noMessage, credits} = this.state;
-
-        const key = process.env.API_KEY;
-
-        debugger;
 
         return (
             <div className="jumbotron d-flex align-items-center">
