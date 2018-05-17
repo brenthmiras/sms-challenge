@@ -1,4 +1,4 @@
-# react-starter
+# sms-challenge
 
 ## Requirements
 1. Node.js version 8.5.0
@@ -7,35 +7,21 @@
 ## Running the application
 1. Navigate to project directory
 ```sh
-$ cd react-starter
+$ cd sms-challenge
 ```
 2. Install dependencies
 ```sh
 $ npm install
 ```
-3. Start the server
+
+3. Build
 ```sh
-$ npm run start:dev
+$ npm run build
 ```
 
-## Directory tree
-```
-.
-├── app
-|    └── index.js
-|    └── components
-|        └── componentA.js
-|        └── componentB.js
-|        └── componentC.js
-├── dist
-|    └── bundle.js
-├── index.html
-├── webpack.config.js
-├── package.json
-├── .gitignore
-└── .babelrc
+4. Start the server
+```sh
+$ node server.js
 ```
 
-## Folders
-- app -- the folder which contains components and the entry point
-- dist -- contains the single bundle file
+5. Browse to http://localhost:3000
