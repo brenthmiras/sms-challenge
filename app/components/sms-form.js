@@ -71,7 +71,10 @@ export default class SMSForm extends Component {
                 });
             }
 
-            this.sendSMS(phone, message);
+            if (phone && message) {
+                this.sendSMS(phone, message);
+            }
+            
         }
 
         else {
