@@ -109,7 +109,13 @@ export default class SMSForm extends Component {
                                     <label>
                                         Phone number
                                     </label>
-                                    <input className="form-control" name="phone" value={phone} onChange={this.handleChange}/>
+
+                                    <div className="input-group">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text">+63</span>
+                                        </div>
+                                        <input className="form-control" name="phone" value={phone} onChange={this.handleChange} placeholder="9xx-xxx-xxxx" maxlength="11"/>
+                                    </div>
 
                                     <ErrorMessage shown={noPhone} text={'Phone number is required!'}/>
                                 </div>
