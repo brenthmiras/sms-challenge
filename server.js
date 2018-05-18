@@ -63,6 +63,37 @@ app.post('/send_sms', (req, res, next) => {
     });
 });
 
+app.get('/shorten/:url', (req, res, next) => {
+    const longUrl = req.params.url;
+
+    const {ACCESS_TOKEN} = bitly;
+
+    let url = 'https://api-ssl.bitly.com/v3/shorten';
+
+    url += `?access_token=${ACCESS_TOKEN}&longUrl=${longUrl}`;
+
+    const headers = {
+        'content-type': 'application/x-www-form-urlencoded'
+    };
+
+    const options = {
+        method: 'GET',
+        url
+    };
+
+    axios(options)
+        .then((response) => {
+            res.status(200).send({
+                data: response.data.data.url
+            });
+        })
+        .catch((response) => {
+            res.status(400).send({
+                message: 'Failed to shorten url.'
+            });
+        });
+});
+
 http.createServer(app).listen(3000, () => {
     console.log("Open app at http://localhost:3000");
 });
