@@ -5,7 +5,10 @@ const axios      = require('axios');
 const http       = require('http');
 const fs         = require('fs');
 const app        = express();
+
 const credentials = getCredentials();
+const {bitly, burstsms} = credentials;
+
 
 // Serve dist directory
 app.use('/', express.static('dist'));
@@ -19,8 +22,8 @@ app.use(bodyParser.json());
 app.post('/send_sms', (req, res, next) => {
     const {phone, message} = req.body;
 
-    const API_KEY = credentials.API_KEY;
-    const API_SECRET = credentials.API_SECRET;
+    const API_KEY = burstsms.API_KEY;
+    const API_SECRET = burstsms.API_SECRET;
 
     const data = {
         to: phone,
@@ -65,24 +68,44 @@ http.createServer(app).listen(3000, () => {
 });
 
 function getCredentials() {
+
+    let data;
+
     try {
-        const data = fs.readFileSync('./.env', 'utf8');
-        const lines = data.split('\n');
-
-        const credentials = lines.reduce((obj, line) => {
-            const parsed = line.split("=");
-            const key = (parsed[0] || '').trim();
-            const value = (parsed[1] || '').trim();
-
-            obj[key] = value;
-
-            return obj;
-        }, {});
-
-        return credentials;
+        data = fs.readFileSync('./.env', 'utf8');
     } catch (error) {
         throw error;
     }
+
+    const group = /^\[.*\]$/;
+    const groupKey = /(?<=\[)(.*)(?=\])/;
+    const keyValue = /^.+\=.+$/;
+    const key = /^.*(?=\=)/;
+    const value = /(?<=\=).*$/;
+    const lines = data.split('\n');
+    const obj   = {};
+    let   currentGroup = '';
+
+    lines.forEach( (line) => {
+
+        const isGroup = group.test(line);
+
+        if (group.test(line)) {
+            currentGroup = line.match(groupKey)[0].trim();
+            obj[currentGroup] = {};   
+        }
+
+        else if (keyValue.test(line)) {
+            const _key   = line.match(key)[0].trim();
+            const _value = line.match(value)[0].trim();
+
+            const a = obj[currentGroup];
+
+            obj[currentGroup][_key] = _value;
+        }
+    });
+
+    return obj;
 }
 
 function btoa(string) {
